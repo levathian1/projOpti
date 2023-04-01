@@ -67,5 +67,7 @@ for i in range (0, max_iter):
 
 #print(matrix)
 print(perm_key)
+print("original layout")
 print(perm_key_arr)
+print("new layout")
 print(best_kb)
