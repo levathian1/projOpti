@@ -15,7 +15,7 @@ current_pair = list()
 
 tabul = list()
 tabu = 10
-max_iter = 5
+max_iter = 50
 
 def get_bigram_val(x, y):
     return matrix.loc[x][y]
@@ -40,14 +40,15 @@ def distance_manhattan_on_kb(kb, perm=perm_key):
     lrow, lcol = 0, 0
     for letter in perm_key:
         row, col = np.where(kb == letter)[0], np.where(kb == letter)[1]
-        print(row, col, letter, np.where(kb == letter)[0])
+        #print(row, col, letter, np.where(kb == letter)[0])
         distance = distance + distance_manhattan(row, lrow, col, lcol)
         lrow, lcol = row, col
     return distance
 
 def swap_keys(kb):
     new_layout = kb
-    ix, iy,  jx, jy = random.sample(range(len(kb)), 4)
+    iy, jy = random.sample(range(10), 2) 
+    ix, jx = random.sample(range(4), 2) 
     new_layout[ix][iy], new_layout[jx][jy] = new_layout[jx][jy], new_layout[ix][iy]
     return new_layout
 
