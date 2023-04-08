@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 import random
+import pygame
+import time
 
 matrix = pd.read_csv("freqBigrammes.txt", sep = "\t", header=0, index_col=0)
 
@@ -19,6 +21,9 @@ max_iter = 50
 
 def get_bigram_val(x, y):
     return matrix.loc[x][y]
+
+def current_matrix():
+    return current_layout
 
 def get_kb_bigram(kb, dist):
     for i in range(0, 4):
@@ -55,15 +60,57 @@ def swap_keys(kb):
 best_kb = current_layout
 best_d = get_kb_bigram(best_kb, distance_manhattan_on_kb(best_kb))
 
+pygame.init()
+
+bg_color = (255, 255, 255)
+cell_color = (0, 0, 0)
+
+screen = pygame.display.set_mode((400, 400))
+
+pygame.display.set_caption("Keyboard Layout Configuration")
+
+font = pygame.font.Font('freesansbold.ttf', 30)
+
+def draw_matrix(matrix_data):
+    # Clear the screen
+    screen.fill(bg_color)
+
+    # Draw each cell in the matrix
+    for y in range(4):
+        for x in range(10):
+            # Calculate the position of the cell on the screen
+            rect = pygame.Rect(x * 50, y * 50, 50, 50)
+            # Draw the cell
+            pygame.draw.rect(screen, cell_color, rect, 1)
+            # Draw the text in the cell
+            text = font.render(current_layout[y][x], True, cell_color)
+            text_rect = text.get_rect(center=rect.center)
+            screen.blit(text, text_rect)
+
+    # Update the display
+    pygame.display.flip()
+
 for i in range (0, max_iter):
     new_layout = swap_keys(current_layout)
-    if tuple(new_layout) not in tabul:
+    if new_layout not in tabul:
         new_distance = get_kb_bigram(best_kb, distance_manhattan_on_kb(best_kb))
         if new_distance < best_d:
             current_layout = new_layout
             best_d = new_distance
             best_kb = new_layout
             tabul.append(new_layout)
+    draw_matrix(current_layout)
+    time.sleep(1)
+
+# Draw the initial state of the matrix
+
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            exit()
+
+
 
 
 #print(matrix)
