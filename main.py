@@ -86,9 +86,12 @@ def draw_matrix(matrix_data):
             text = font.render(current_layout[y][x], True, cell_color)
             text_rect = text.get_rect(center=rect.center)
             screen.blit(text, text_rect)
+    
 
     # Update the display
     pygame.display.flip()
+
+
 
 for i in range (0, max_iter):
     new_layout = swap_keys(current_layout)
@@ -99,7 +102,12 @@ for i in range (0, max_iter):
             best_d = new_distance
             best_kb = new_layout
             tabul.append(new_layout)
+    nb = "iterations: " + str(i)
     draw_matrix(current_layout)
+    text2 = font.render(nb, True, (255, 255,255), (0, 0, 0))
+    screen.blit(text2, (200, 300))
+    pygame.display.update()
+
     time.sleep(1)
 
 # Draw the initial state of the matrix
@@ -109,6 +117,8 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
+    
+   
 
 
 
