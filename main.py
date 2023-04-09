@@ -29,25 +29,25 @@ def get_kb_bigram(kb, dist):
     for i in range(0, 4):
         for j in range(0, 9):
             if(kb[i][j] != " " and kb[i][j+1] != " "):
-                key = kb[i][j]
+                key = kb[i, j]
                 key = key.upper() + "_"
-                next = kb[i][j+1]
+                next = kb[i, j+1]
                 next ="_" + next.upper()
                 dist = dist * get_bigram_val(key, next)
     return dist
 
 
-def distance_manhattan(p1x, p1y, p2x, p2y):
-    return abs(p1x-p2x)+abs(p1y-p2y)
+def distance_manhattan(key1, key2):
+    return abs(key1[0]-key2[0])+abs(key1[1]-key2[1])
 
-def distance_manhattan_on_kb(kb, perm=perm_key):
+def distance_manhattan_on_kb(kb):
     distance = 0
-    lrow, lcol = 0, 0
-    for letter in perm_key:
-        row, col = np.where(kb == letter)[0], np.where(kb == letter)[1]
-        #print(row, col, letter, np.where(kb == letter)[0])
-        distance = distance + distance_manhattan(row, lrow, col, lcol)
-        lrow, lcol = row, col
+    for i in range (0, 4):
+        for j in range(0, 9):
+            key1 = (j, i)
+            key2 = (j+1, i)
+            #print(row, col, letter, np.where(kb == letter)[0])
+            distance = distance + distance_manhattan(key1, key2)
     return distance
 
 def swap_keys(kb):
@@ -65,7 +65,7 @@ pygame.init()
 bg_color = (255, 255, 255)
 cell_color = (0, 0, 0)
 
-screen = pygame.display.set_mode((400, 400))
+screen = pygame.display.set_mode((600, 600))
 
 pygame.display.set_caption("Keyboard Layout Configuration")
 
@@ -107,6 +107,7 @@ for i in range (0, max_iter):
     text2 = font.render(nb, True, (255, 255,255), (0, 0, 0))
     screen.blit(text2, (200, 300))
     pygame.display.update()
+    print(current_layout)
 
     time.sleep(1)
 
