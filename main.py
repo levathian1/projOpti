@@ -128,22 +128,31 @@ for i in range (0, max_iter):
             best_d = new_distance
             best_kb = new_layout
             tabul.append(old)
+            print(tabul)
             print("better")
             print(best_kb)
         else:
             print("not better")
             print(best_kb)
-    nb = "iterations: " + str(i)
+    if len(tabul) > tabu:
+        tabul.pop(0)
+    #condition d'arret avec marge si on passe la moitie des iterations et la distance ne s'ameliore pas considerablement
+    if (max_iter // 2) < i and new_distance + 200 > new_distance:
+        break
+    tabu_list = "current tabu list: " + str(tabul)
+    nb = "iterations: " + str(i) + " / " + str(max_iter)
     pair = "considered pair: " + str(old[0]) + " " +str(old[1])
     distance_t = "best distance: " + str(best_d) + " current swap distance: " + str(new_distance)
     print(new_distance, best_d)
     draw_matrix(best_kb)
-    text2 = font.render(nb, True, (255, 255,255), (0, 0, 0))
-    text3 = font.render(pair, True, (255, 255,255), (0, 0, 0))
-    text4 = font.render(distance_t, True, (255, 255,255), (0, 0, 0))
-    screen.blit(text2, (200, 300))
-    screen.blit(text3, (200, 400))
-    screen.blit(text4, (000, 500))
+    text2 = font.render(nb, True, (0, 0, 0), (255, 255,255))
+    text3 = font.render(pair, True,  (0, 0, 0), (255, 255,255))
+    text4 = font.render(distance_t, True,  (0, 0, 0), (255, 255,255))
+    text5 = font.render(tabu_list, True,  (0, 0, 0), (255, 255,255))
+    screen.blit(text2, (0, 300))
+    screen.blit(text3, (0, 350))
+    screen.blit(text4, (0, 400))
+    screen.blit(text5, (0, 450))
     pygame.display.update()
     
 
